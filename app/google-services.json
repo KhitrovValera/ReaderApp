@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "323201387728",
+    "project_id": "reader-app-1ad8f",
+    "storage_bucket": "reader-app-1ad8f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:323201387728:android:014769155f519e8733a2d5",
+        "android_client_info": {
+          "package_name": "com.example.readerapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "323201387728-sjcovql7c6jokvlq455qrgsvvuaju3n4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.readerapp",
+            "certificate_hash": "d01887f53f93da912821984688dd5c922a797d10"
+          }
+        },
+        {
+          "client_id": "323201387728-qtb77bg75ip0573f08h34jekpkskhh94.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6tEn5RvhpBmP3ldZEr9-tp7YDk5ziu5c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "323201387728-qtb77bg75ip0573f08h34jekpkskhh94.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

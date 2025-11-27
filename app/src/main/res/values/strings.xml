@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">ReaderApp</string>
+    <string name="default_web_client_id">323201387728-qtb77bg75ip0573f08h34jekpkskhh94.apps.googleusercontent.com</string>
+    <string name="back">Назад</string>
+    <string name="enter_in_acc_title">Вход в аккаунт</string>
+    <string name="register">Регистрация</string>
+    <string name="login_in_acc">Вход в аккаунт</string>
+    <string name="my_book">Мои книги</string>
+    <string name="download_book">Загрузка книги</string>
+    <string name="profile">Профиль</string>
+    <string name="book">Название книги</string>
+    <string name="profile_error">Пользователь не найден... Как?!!!</string>
+</resources>
