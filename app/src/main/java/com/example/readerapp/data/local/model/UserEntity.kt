@@ -8,8 +8,8 @@ data class UserEntity(
     @PrimaryKey val id: String = "current",
     val uid: String,
     val email: String,
-    val name: String,
-    val image: String,
+    val name: String?,
+    val image: String?,
     val booksId: List<Int> = emptyList(),
     val remoteBooksId: List<String> = emptyList()
 )

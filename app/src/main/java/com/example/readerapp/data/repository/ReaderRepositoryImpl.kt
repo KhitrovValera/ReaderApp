@@ -1,6 +1,6 @@
 package com.example.readerapp.data.repository
 
-import com.example.readerapp.data.common.toEntity
+import android.util.Log
 import com.example.readerapp.data.local.dao.BooksDao
 import com.example.readerapp.data.local.dao.UserDao
 import com.example.readerapp.data.local.model.BookEntity
@@ -11,6 +11,8 @@ import com.example.readerapp.domain.model.Book
 import com.example.readerapp.domain.model.User
 import com.example.readerapp.domain.repository.ReaderRepository
 import com.example.readerapp.toDomain
+import com.example.readerapp.toDto
+import com.example.readerapp.toEntity
 import com.google.firebase.auth.FirebaseUser
 import javax.inject.Inject
 
@@ -66,6 +68,8 @@ class ReaderRepositoryImpl @Inject constructor(
         name: String?,
         photoUri: String?
     ): Result<Unit> {
+
+        Log.d("gdsfgsd", "${name}")
         userDao.getCurrentUser()?.let {
             userDao.insertUser(it.copy(
                 name = name ?: it.name,
@@ -106,7 +110,7 @@ class ReaderRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getAllFilterUsersBook(searchText : String) : List<Book>? {
+    override suspend fun getAllFilterUsersBook(searchText: String?): List<Book>? {
         val user = userDao.getCurrentUser()
 
         return if (auth.getCurrentUser() == null || user == null)  null
@@ -116,32 +120,8 @@ class ReaderRepositoryImpl @Inject constructor(
         }
     }
 
-    suspend fun addRemoteBookToUser(bookId: String) {
-        val user = userDao.getCurrentUser()
-
-        if (auth.getCurrentUser() == null || user == null)  return
-        else {
-            firebase.addBookToUser(user.uid, bookId)
-
-            if (bookId !in user.remoteBooksId) {
-                userDao.insertUser(user.copy(
-                    remoteBooksId = user.remoteBooksId + bookId
-                ))
-            }
-        }
-    }
-
     override suspend fun deleteBook(bookId: Int) {
         bookDao.deleteBook(bookId)
-    }
-
-    override suspend fun addRemoteBook(bookId: String) : Book? {
-        addRemoteBookToUser(bookId)
-
-        val bookDto = firebase.getBookById(bookId)
-
-        return bookDto?.toDomain()
-
     }
 
     override suspend fun saveLocalBook(
@@ -158,6 +138,24 @@ class ReaderRepositoryImpl @Inject constructor(
                 localFilePath = localPath
             )
         )
+    }
+
+    override suspend fun addLocalBookToRemote(book: Book) {
+
+        val user = userDao.getCurrentUser()
+
+        if (auth.getCurrentUser() == null || user == null)  return
+        else {
+            val dtoBook = book.toDto()
+
+            firebase.addBookToUser(user.uid, dtoBook)
+
+            val localBook = book.toEntity().copy(remoteId = dtoBook.bookId)
+
+            bookDao.insertBook(localBook)
+            userDao.insertUser(user.copy(remoteBooksId = user.remoteBooksId + dtoBook.bookId, booksId = user.booksId + localBook.id))
+
+        }
     }
 
 }

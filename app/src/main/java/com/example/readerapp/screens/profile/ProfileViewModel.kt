@@ -1,5 +1,6 @@
 package com.example.readerapp.screens.profile
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.readerapp.R
@@ -20,6 +21,10 @@ class ProfileViewModel @Inject constructor(
     private val _profileState = MutableStateFlow<ProfileState>(ProfileState.Loading)
     val profileState = _profileState.asStateFlow()
 
+    init {
+        getUser()
+    }
+
     fun getUser() {
         _profileState.value = ProfileState.Loading
         viewModelScope.launch {
@@ -33,7 +38,7 @@ class ProfileViewModel @Inject constructor(
     }
 
 
-    fun changeUserData(name: String?, photoUri: String?) {
+    fun changeUserData(name: String? = null, photoUri: String? = null) {
         viewModelScope.launch {
             val result = repository.updateUser(name, photoUri)
             result.fold(
@@ -50,10 +55,12 @@ class ProfileViewModel @Inject constructor(
     }
 
 
+
+
     sealed interface ProfileState {
         data class Idle(var user: User) : ProfileState
         object Loading : ProfileState
-        data class ProfileError(val message: Int = R.string.profile_error) : ProfileState
+        data class ProfileError(val message: String = "Как?? чтобы видеть этот экран надо залогиниться") : ProfileState
     }
 
 

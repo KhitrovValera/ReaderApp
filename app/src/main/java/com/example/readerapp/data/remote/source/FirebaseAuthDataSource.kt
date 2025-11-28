@@ -8,6 +8,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
+import androidx.core.net.toUri
 
 class FirebaseAuthDataSource @Inject constructor(
     private val auth: FirebaseAuth
@@ -50,7 +51,7 @@ class FirebaseAuthDataSource @Inject constructor(
             val userUpdate = UserProfileChangeRequest.Builder()
                 .apply {
                     name?.let { setDisplayName(it) }
-                    photoUri?.let { setPhotoUri(Uri.parse(it)) }
+                    photoUri?.let { setPhotoUri(it.toUri()) }
                 }
                 .build()
             user.updateProfile(userUpdate).await()

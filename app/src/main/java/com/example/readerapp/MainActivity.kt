@@ -1,10 +1,16 @@
 package com.example.readerapp
 
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat
 import androidx.credentials.Credential
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
@@ -13,6 +19,7 @@ import androidx.credentials.exceptions.GetCredentialCancellationException
 import androidx.lifecycle.lifecycleScope
 import com.example.readerapp.navigation.AppNavigation
 import com.example.readerapp.screens.login.AuthViewModel
+import com.example.readerapp.screens.profile.ProfileViewModel
 import com.example.readerapp.ui.theme.ReaderAppTheme
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
@@ -22,6 +29,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.security.Permission
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -29,6 +37,8 @@ class MainActivity : ComponentActivity() {
     private lateinit var credentialManager: CredentialManager
 
     private val authViewModel: AuthViewModel by viewModels()
+
+    private val profileViewModel: ProfileViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +51,7 @@ class MainActivity : ComponentActivity() {
             ReaderAppTheme {
                 AppNavigation(
                     authViewModel,
+                    profileViewModel,
                     ::signInWithGoogle
                 )
             }
@@ -79,5 +90,32 @@ class MainActivity : ComponentActivity() {
             authViewModel.setError("Ошибка авторизации при помощи Google")
         }
     }
+
+//    fun choseUserPhoto(permission: String, code: Int): Boolean {
+//
+//        val result = baseContext.checkSelfPermission(permission)
+//
+//        if (result == PackageManager.PERMISSION_GRANTED) {
+//            return true
+//        } else {
+//            val a = requestPermissions(
+//                arrayOf(permission),
+//                code
+//            )
+//            val result2 = baseContext.checkSelfPermission(permission)
+//            return result2 == PackageManager.PERMISSION_GRANTED
+//        }
+//    }
+//
+//    override fun onRequestPermissionsResult(
+//        requestCode: Int,
+//        permissions: Array<out String?>,
+//        grantResults: IntArray,
+//        deviceId: Int
+//    ) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults, deviceId)
+//
+//        if (requestCode == )
+//    }
 
 }

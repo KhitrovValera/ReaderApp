@@ -13,17 +13,20 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.readerapp.bottom_bar.AppBottomBar
-import com.example.readerapp.screens.all_books.AllBooksTopBar
+import com.example.readerapp.screens.download_book.DownloadBookTopBar
 import com.example.readerapp.screens.book.BookTopBar
 import com.example.readerapp.screens.login.AuthViewModel
 import com.example.readerapp.screens.login.LoginScreen
 import com.example.readerapp.screens.login.LoginScreenTopBar
 import com.example.readerapp.screens.my_books.MyBookTopBar
+import com.example.readerapp.screens.profile.ProfileScreen
 import com.example.readerapp.screens.profile.ProfileTopBar
+import com.example.readerapp.screens.profile.ProfileViewModel
 
 @Composable
 fun AppNavigation(
     authViewModel: AuthViewModel,
+    profileViewModel: ProfileViewModel,
     signInWithGoogle: () -> Unit
 ) {
     val navController = rememberNavController()
@@ -34,7 +37,7 @@ fun AppNavigation(
         "screenSaver" -> AppScreen.ScreenSaver
         "login" -> AppScreen.Login
         "my books" -> AppScreen.MyBooks
-        "all books" -> AppScreen.AllBooks
+        "download" -> AppScreen.DownloadBook
         "profile" -> AppScreen.Profile
         else -> AppScreen.Book(1)
     }
@@ -46,7 +49,7 @@ fun AppNavigation(
             .fillMaxSize(),
         topBar = {
             when (currentScreen) {
-                AppScreen.AllBooks -> AllBooksTopBar()
+                AppScreen.DownloadBook -> DownloadBookTopBar()
                 AppScreen.Login -> LoginScreenTopBar { authViewModel.onSwitchModePressed() }
                 AppScreen.MyBooks -> MyBookTopBar {  }
                 AppScreen.Profile -> ProfileTopBar()
@@ -64,11 +67,17 @@ fun AppNavigation(
             startDestination = AppScreen.Login.route,
             modifier = Modifier.padding(values)
         ) {
-            composable(AppScreen.Login.route) { LoginScreen(
-                authViewModel,
-                signInWithGoogle,
-                snackBarState
-            ) { navController.navigate(AppScreen.MyBooks.route) }
+            composable(AppScreen.Login.route) {
+                LoginScreen(
+                    authViewModel,
+                    signInWithGoogle,
+                    snackBarState
+                ) { navController.navigate(AppScreen.Profile.route) }
+            }
+            composable(AppScreen.Profile.route) {
+                ProfileScreen(
+                    profileViewModel
+                ) { navController.navigate(AppScreen.Login.route) }
             }
 
         }

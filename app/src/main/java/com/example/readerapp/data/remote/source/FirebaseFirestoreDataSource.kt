@@ -2,6 +2,7 @@ package com.example.readerapp.data.remote.source
 
 import com.example.readerapp.data.remote.model.BookDto
 import com.example.readerapp.data.remote.model.UserDto
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -46,26 +47,17 @@ class FirebaseFirestoreDataSource @Inject constructor(
         }
     }
 
-    suspend fun addBook(book: BookDto) {
-        firestore.collection("books")
-            .document(book.bookId)
-            .set(book)
-            .await()
-    }
-
-    suspend fun addBookToUser(userId: String, bookId: String) {
+    suspend fun addBookToUser(userId: String, book: BookDto) {
         val userDoc = firestore.collection("users").document(userId)
+        val bookDoc = firestore.collection("books").document(book.bookId)
 
-        firestore.runTransaction { transaction ->
-            val userSnapshot = transaction.get(userDoc)
+        val batch = firestore.batch()
 
-            val booksId = userSnapshot.get("booksId") as? MutableList<String> ?: mutableListOf()
+        batch.set(bookDoc, book)
 
-            if (!booksId.contains(bookId)) booksId.add(bookId)
+        batch.update(userDoc, "bookId", FieldValue.arrayUnion(book.bookId))
 
-            transaction.update(userDoc, "booksId", booksId)
-
-        }.await()
+        batch.commit().await()
 
     }
 

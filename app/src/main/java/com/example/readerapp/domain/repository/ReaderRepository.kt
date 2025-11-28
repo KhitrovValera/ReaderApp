@@ -23,11 +23,9 @@ interface ReaderRepository {
 
     suspend fun getAllUsersRemoteBook(): List<Book>?
 
-    suspend fun getAllFilterUsersBook(searchText : String) : List<Book>?
+    suspend fun getAllFilterUsersBook(searchText : String?) : List<Book>?
 
     suspend fun deleteBook(bookId: Int)
-
-    suspend fun addRemoteBook(bookId: String) : Book?
 
     suspend fun saveLocalBook(
         remoteId: String,
@@ -35,5 +33,7 @@ interface ReaderRepository {
         author: String,
         localPath: String
     )
+
+    suspend fun addLocalBookToRemote(book: Book)
 
 }

@@ -1,10 +1,9 @@
 package com.example.readerapp.domain.model
 
 data class Book(
-    val id: Int,
-    val remoteId: String,
+    val remoteId: String?,
     val title: String,
     val author: String,
-    val localFilePath: String,
-    val uri: String
+    val localFilePath: String?,
+    val uri: String?
 )

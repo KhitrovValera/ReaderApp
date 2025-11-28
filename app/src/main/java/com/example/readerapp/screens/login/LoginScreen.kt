@@ -22,6 +22,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -77,7 +78,7 @@ fun LoginScreen(
     }
 
     LaunchedEffect(authState) {
-        if (authState is AuthViewModel.AuthState.AuthError) {
+        if (errorVisibility) {
             snackBarState.showSnackbar(
                 authState.message ?: "Неизвестная ошибка"
             )
@@ -109,7 +110,6 @@ fun LoginScreen(
                                 snackBarState.showSnackbar(
                                     authState.message ?: "Неизвестная ошибка"
                                 )
-                                Log.d("fsdfsdfsdfsfds", "$authState")
                             }
                         }
                     ) {
@@ -228,7 +228,7 @@ fun AuthTextField(
         modifier = Modifier
             .fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        colors = TextFieldDefaults.colors(
+        colors = OutlinedTextFieldDefaults.colors(
             focusedTextColor = MaterialTheme.colorScheme.onSurface,
             focusedContainerColor = MaterialTheme.colorScheme.background,
             unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,

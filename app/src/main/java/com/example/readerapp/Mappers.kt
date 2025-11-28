@@ -6,15 +6,34 @@ import com.example.readerapp.data.remote.model.BookDto
 import com.example.readerapp.data.remote.model.UserDto
 import com.example.readerapp.domain.model.Book
 import com.example.readerapp.domain.model.User
+import java.util.UUID
 
 fun BookEntity.toDomain() : Book {
     return Book(
-        id = id,
-        remoteId = remoteId,
         title = title,
         author = author,
         localFilePath = localFilePath,
         uri = ""
+    )
+}
+
+fun Book.toEntity() : BookEntity {
+    return BookEntity(
+        remoteId = remoteId,
+        title = title,
+        author = author,
+        localFilePath = localFilePath ?: "не сыграет роль",
+    )
+}
+
+fun UserDto.toEntity() : UserEntity {
+    return UserEntity(
+        uid = uid,
+        email = email,
+        name = name,
+        image = image,
+        booksId = emptyList(),
+        remoteBooksId = booksId
     )
 }
 
@@ -26,6 +45,15 @@ fun BookDto.toDomain() : Book {
         author = author,
         localFilePath = "",
         uri = uri
+    )
+}
+
+fun Book.toDto() : BookDto {
+    return BookDto(
+        bookId = if (remoteId == "" || remoteId == null) UUID.randomUUID().toString() else remoteId,
+        title = title,
+        author = author,
+        uri = uri ?: ""
     )
 }
 

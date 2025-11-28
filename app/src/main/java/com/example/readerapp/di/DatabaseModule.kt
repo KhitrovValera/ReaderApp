@@ -28,7 +28,9 @@ object DatabaseModule {
             context,
             ReaderDatabase::class.java,
             DATABASE_NAME
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     @Singleton

@@ -15,7 +15,7 @@ import com.example.readerapp.data.local.model.UserEntity
         BookEntity::class,
         UserEntity::class
     ],
-    version = 1,
+    version = 3,
     exportSchema = false
 )
 @TypeConverters(ListIntConverter::class, ListStringConverter::class)
